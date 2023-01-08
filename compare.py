@@ -25,19 +25,26 @@ if __name__ == "__main__":
     input_file = sys.argv[1]
     output_file = sys.argv[2]
 
+    # open file with paths
     with open(input_file) as compare_src:
 
         for paths in compare_src:
             original_path, plagiat_path = paths.split()
+
+            # read first file
             with open(original_path, encoding='utf_8') as original_file:
                 original_text = re.split(r'\s', ' '.join(original_file.readlines()).lower())
                 original_text = "".join(original_text)
+
+            # read second file
             with open(plagiat_path, encoding='utf_8') as plagiat_file:
                 plagiat_text = re.split(r'\s', ''.join(plagiat_file.readlines()).lower())
                 plagiat_text = "".join(plagiat_text)
 
+            # score texts
             longest_text = max(len(original_text), len(plagiat_text))
             output = (longest_text - distance(original_text, plagiat_text)) / longest_text
 
+            # write output
             with open(output_file, 'a') as scores:
                 scores.write(str(output) + '\n')
